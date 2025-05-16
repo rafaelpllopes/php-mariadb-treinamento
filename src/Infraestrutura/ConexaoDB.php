@@ -1,5 +1,7 @@
 <?php
 
+namespace Alura\Serenatto\Infraestrutura;
+
 use PDO;
 
 class ConexaoDB

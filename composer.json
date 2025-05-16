@@ -1,0 +1,15 @@
+{
+    "name": "rafael/php-mariadb-treinamento",
+    "autoload": {
+        "psr-4": {
+            "Alura\\Serenatto\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "rafaelpllopes",
+            "email": "rafael.pllopes@gmail.com"
+        }
+    ],
+    "require": {}
+}

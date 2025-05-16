@@ -1,16 +1,29 @@
 <?php
 
-    require "src/ConexaoDB.php";
+use Alura\Serenatto\Infraestrutura\ConexaoDB;
+use Alura\Serenatto\Modelo\Tipo;
+use Alura\Serenatto\Repositorio\PdoProdutos;
 
-    $sqlCafe = "SELECT * FROM produtos WHERE tipo = 'Café' ORDER BY preco;";
-    $pdo = ConexaoDB::criarConexao();
+require 'vendor/autoload.php';
 
-    $stmt = $pdo->query($sqlCafe);
-    $produtosCafe = $stmt->fetchAll();
+$pdo = ConexaoDB::criarConexao();
+$produtos = new PdoProdutos($pdo);
+$produtosCafe = $produtos->exibir(Tipo::Cafe->value);
+$produtosAlmoco = $produtos->exibir(Tipo::Almoco->value);
 
-    $sqlAlmoco = "SELECT * FROM produtos WHERE tipo = 'Almoço' ORDER BY preco;";
-    $produtosAlmoco = $pdo->query($sqlAlmoco)->fetchAll();
-?>
+function exibeProdutos(array $produtos) {
+    foreach ($produtos as $produto) {
+        echo "
+        <div class='container-produto'>
+            <div class='container-foto'>
+                <img src='{$produto->imagemCaminho()}'>
+            </div>
+            <p> {$produto->nome()}</p>
+            <p>{$produto->descricao()}</p>
+            <p>R$ {$produto->precoFormatado()}</p>
+        </div>";
+    }
+}
 
 ?>
 
@@ -60,31 +73,8 @@
                     />
                 </div>
                 <div class="container-cafe-manha-produtos">
-                    <?php
-                        // foreach ($produtosCafe as $produto) {
-                        //     echo "<div class='container-produto'>
-                        //         <div class='container-foto'>
-                        //             <img src='{$produto['imagem']}' />
-                        //         </div>
-                        //         <p>{$produto['nome']}</p>
-                        //         <p>
-                        //             {$produto['descricao']}
-                        //         </p>
-                        //         <p>R$ {$produto['preco']}</p>
-                        //     </div>";
-                        // };
-                    ?>
-                    <?php foreach ($produtosCafe as $cafe): ?>
-                        <div class="container-produto">
-                            <div class="container-foto">
-                                <img src="<?= './img/' . $cafe['imagem'] ?>">
-                            </div>
-                            <p><?= $cafe['nome'] ?></p>
-                            <p><?= $cafe['descricao'] ?></p>
-                            <p><?= "R$ " . $cafe['preco'] ?></p>
-                        </div>
-                    <?php endforeach; ?>
-
+                    <?php exibeProdutos($produtosCafe); ?>
+                </div>
         </section>
         <section class="container-almoco">
             <div class="container-almoco-titulo">
@@ -92,16 +82,7 @@
                 <img class= "ornaments" src="img/ornaments-coffee.png" alt="ornaments">
             </div>
             <div class="container-almoco-produtos">
-                <?php foreach ($produtosAlmoco as $almoco):?>
-                    <div class="container-produto">
-                        <div class="container-foto">
-                            <img src="<?= './img/' . $almoco['imagem'] ?>">
-                        </div>
-                        <p><?= $almoco['nome'] ?></p>
-                        <p><?= $almoco['descricao'] ?></p>
-                        <p><?= "R$ " . $almoco['preco'] ?></p>
-                    </div>
-                <?php endforeach; ?>
+                <?php exibeProdutos($produtosAlmoco); ?>
             </div>            
         </section>
         </main>
