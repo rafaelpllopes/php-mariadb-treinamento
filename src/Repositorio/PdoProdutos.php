@@ -85,9 +85,21 @@ class PdoProdutos implements ProdutosRepositorio
     }
 
     #[\Override]
-    public function atualizar(Produto $produtos): bool
+    public function atualizar(Produto $produto): bool
     {
-        return true;
+        $sqlQuery = "UPDATE produtos
+        SET tipo = ?, nome = ?, descricao = ?,
+        preco = ?, imagem = ?
+        WHERE id = ?;";
+        $stmt = $this->conexao->prepare($sqlQuery);
+        $stmt->bindValue(1, $produto->tipo());
+        $stmt->bindValue(2, $produto->nome());
+        $stmt->bindValue(3, $produto->descricao());
+        $stmt->bindValue(4, (float) $produto->preco());
+        $stmt->bindValue(5, $produto->imagem());
+        $stmt->bindValue(6, $produto->id());
+
+        return $stmt->execute();
     }
 
     #[\Override]

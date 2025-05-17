@@ -1,3 +1,34 @@
+<?php
+
+use Alura\Serenatto\Infraestrutura\ConexaoDB;
+use Alura\Serenatto\Modelo\Produto;
+use Alura\Serenatto\Repositorio\PdoProdutos;
+
+require 'vendor/autoload.php';
+
+$pdo = ConexaoDB::criarConexao();
+$bancoDeDados = new PdoProdutos($pdo);
+
+$id = $_GET['id'];
+$produto = $bancoDeDados->pegarUmProduto($id);
+
+if (isset($_POST['editar'])) {
+  $produto->setTipo($_POST['tipo'],);
+  $produto->setNome($_POST['nome'],);
+  $produto->setDescricao($_POST['descricao']);
+  $produto->setPreco($_POST['preco']);
+
+  if (isset($_FILES['imagem'])) {
+    $produto->setImagem(uniqid().$_FILES['imagem']['name']);
+    move_uploaded_file($_FILES['imagem']['tmp_name'], $produto->imagemCaminho());
+  }
+  
+  $bancoDeDados->atualizar($produto);
+  header("Location: admin.php");
+}
+
+?>
+
 <!doctype html>
 <html lang="pt-br">
 <head>
@@ -24,27 +55,27 @@
     <img class= "ornaments" src="img/ornaments-coffee.png" alt="ornaments">
   </section>
   <section class="container-form">
-    <form action="#">
+    <form method="post" enctype="multipart/form-data">
 
       <label for="nome">Nome</label>
-      <input type="text" id="nome" name="nome" placeholder="Digite o nome do produto" required>
+      <input type="text" id="nome" name="nome" placeholder="Digite o nome do produto" value='<?= $produto->nome() ?>' required>
 
       <div class="container-radio">
         <div>
             <label for="cafe">Café</label>
-            <input type="radio" id="cafe" name="tipo" value="Café" checked>
+            <input type="radio" id="cafe" name="tipo" value="Café" <?= ($produto->tipo() === 'Café') ? "checked" : '' ?>>
         </div>
         <div>
             <label for="almoco">Almoço</label>
-            <input type="radio" id="almoco" name="tipo" value="Almoço">
+            <input type="radio" id="almoco" name="tipo" value="Almoço" <?= ($produto->tipo() === 'Almoço') ? "checked" : '' ?>>
         </div>
     </div>
 
       <label for="descricao">Descrição</label>
-      <input type="text" id="descricao" name="descricao" placeholder="Digite uma descrição" required>
+      <input type="text" id="descricao" name="descricao" placeholder="Digite uma descrição" value="<?= $produto->descricao() ?>" required>
 
       <label for="preco">Preço</label>
-      <input type="text" id="preco" name="preco" placeholder="Digite uma descrição" required>
+      <input type="text" id="preco" name="preco" placeholder="Digite uma descrição" value="<?= $produto->precoFormatado() ?>" required>
 
       <label for="imagem">Envie uma imagem do produto</label>
       <input type="file" name="imagem" accept="image/*" id="imagem" placeholder="Envie uma imagem">

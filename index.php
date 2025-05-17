@@ -4,7 +4,7 @@ use Alura\Serenatto\Infraestrutura\ConexaoDB;
 use Alura\Serenatto\Modelo\Tipo;
 use Alura\Serenatto\Repositorio\PdoProdutos;
 
-require 'vendor/autoload.php';
+require_once 'vendor/autoload.php';
 
 $pdo = ConexaoDB::criarConexao();
 $produtos = new PdoProdutos($pdo);

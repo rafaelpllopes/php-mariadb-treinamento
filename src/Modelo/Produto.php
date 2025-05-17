@@ -42,6 +42,31 @@ class Produto
     {
         return $this->imagem;
     }
+
+    public function setTipo(string $tipo): void
+    {
+        $this->tipo = $tipo;
+    }
+
+    public function setNome(string $nome): void
+    {
+        $this->nome = $nome;
+    }
+
+    public function setDescricao(string $descricao): void
+    {
+        $this->descricao = $descricao;
+    }
+
+    public function setPreco(float $preco): void
+    {
+        $this->preco = $preco;
+    }
+
+    public function setImagem(string $imagem): void
+    {
+        $this->imagem = $imagem;
+    }
     
     public function precoFormatado(): string
     {

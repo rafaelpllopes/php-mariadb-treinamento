@@ -3,7 +3,7 @@
 use Alura\Serenatto\Infraestrutura\ConexaoDB;
 use Alura\Serenatto\Repositorio\PdoProdutos;
 
-require 'vendor/autoload.php';
+require_once 'vendor/autoload.php';
 
 $pdo = ConexaoDB::criarConexao();
 $bancoDeDados = new PdoProdutos($pdo);
@@ -18,7 +18,7 @@ function listaProdutos(array $produtos): void
         <td>{$produto->tipo()}</td>
         <td>{$produto->descricao()}</td>
         <td>R$ {$produto->precoFormatado()}</td>
-        <td><a class='botao-editar' href='editar-produto.php'>Editar</a></td>
+        <td><a class='botao-editar' href='editar-produto.php?id={$produto->id()}'>Editar</a></td>
         <td>
           <form action='excluir-produto.php' method='POST'>
             <input type='hidden' name='id' value='{$produto->id()}'>
@@ -73,7 +73,8 @@ function listaProdutos(array $produtos): void
       </tbody>
     </table>
   <a class="botao-cadastrar" href="cadastrar-produto.php">Cadastrar produto</a>
-  <form action="#" method="post">
+  <a class="botao-cadastrar" href="./index.php">Página Incial</a>
+  <form action="gerador-pdf.php" method="post">
     <input type="submit" class="botao-cadastrar" value="Baixar Relatório"/>
   </form>
   </section>
