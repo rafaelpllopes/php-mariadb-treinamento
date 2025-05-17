@@ -2,18 +2,15 @@
 
 namespace Alura\Serenatto\Modelo;
 
-use BcMath\Number;
-use NumberFormatter;
-
- class Produto
- {
+class Produto
+{
     public function __construct(
-        private int $id,
+        private ?int $id,
         private string $tipo,
         private string $nome,
         private string $descricao,
         private float $preco,
-        private string $imagem
+        private string $imagem = "logo-serenatto.png"
     ) {}
 
     public function id(): int
@@ -55,4 +52,4 @@ use NumberFormatter;
     {
         return './img/' . $this->imagem;
     }
- }
+}
